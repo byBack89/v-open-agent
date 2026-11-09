@@ -1,0 +1,565 @@
+{
+  "$defs": {
+    "AsrPayload": {
+      "additionalProperties": false,
+      "properties": {
+        "authentication_basis": {
+          "enum": [
+            "explicit_push_to_talk",
+            "none"
+          ],
+          "title": "Authentication Basis",
+          "type": "string"
+        },
+        "is_final": {
+          "title": "Is Final",
+          "type": "boolean"
+        },
+        "kind": {
+          "const": "asr_transcript",
+          "title": "Kind",
+          "type": "string"
+        },
+        "revision": {
+          "minimum": 0,
+          "title": "Revision",
+          "type": "integer"
+        },
+        "speaker_role": {
+          "enum": [
+            "authenticated_user",
+            "untrusted_environment",
+            "unknown"
+          ],
+          "title": "Speaker Role",
+          "type": "string"
+        },
+        "text": {
+          "maxLength": 500,
+          "title": "Text",
+          "type": "string"
+        },
+        "utterance_id": {
+          "maxLength": 128,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9_.:-]+$",
+          "title": "Utterance Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "kind",
+        "utterance_id",
+        "revision",
+        "is_final",
+        "text",
+        "speaker_role",
+        "authentication_basis"
+      ],
+      "title": "AsrPayload",
+      "type": "object"
+    },
+    "Detection": {
+      "additionalProperties": false,
+      "properties": {
+        "bbox": {
+          "maxItems": 4,
+          "minItems": 4,
+          "prefixItems": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "number"
+            },
+            {
+              "type": "number"
+            },
+            {
+              "type": "number"
+            }
+          ],
+          "title": "Bbox",
+          "type": "array"
+        },
+        "class_id": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Class Id"
+        },
+        "label": {
+          "minLength": 1,
+          "title": "Label",
+          "type": "string"
+        },
+        "score": {
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "Score",
+          "type": "number"
+        }
+      },
+      "required": [
+        "label",
+        "bbox",
+        "score"
+      ],
+      "title": "Detection",
+      "type": "object"
+    },
+    "DetectionPayload": {
+      "additionalProperties": false,
+      "properties": {
+        "detections": {
+          "items": {
+            "$ref": "#/$defs/Detection"
+          },
+          "title": "Detections",
+          "type": "array"
+        },
+        "frame_id": {
+          "maxLength": 128,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9_.:-]+$",
+          "title": "Frame Id",
+          "type": "string"
+        },
+        "kind": {
+          "const": "object_detection",
+          "title": "Kind",
+          "type": "string"
+        }
+      },
+      "required": [
+        "kind",
+        "frame_id",
+        "detections"
+      ],
+      "title": "DetectionPayload",
+      "type": "object"
+    },
+    "HealthPayload": {
+      "additionalProperties": false,
+      "description": "대상 센서는 Observation.stream_id 이다.",
+      "properties": {
+        "detail_code": {
+          "minLength": 1,
+          "title": "Detail Code",
+          "type": "string"
+        },
+        "kind": {
+          "const": "health",
+          "title": "Kind",
+          "type": "string"
+        },
+        "status": {
+          "enum": [
+            "ok",
+            "degraded",
+            "down"
+          ],
+          "title": "Status",
+          "type": "string"
+        }
+      },
+      "required": [
+        "kind",
+        "status",
+        "detail_code"
+      ],
+      "title": "HealthPayload",
+      "type": "object"
+    },
+    "ModelRef": {
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "minLength": 1,
+          "title": "Id",
+          "type": "string"
+        },
+        "revision": {
+          "minLength": 1,
+          "title": "Revision",
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "revision"
+      ],
+      "title": "ModelRef",
+      "type": "object"
+    },
+    "OcrPayload": {
+      "additionalProperties": false,
+      "properties": {
+        "bbox": {
+          "maxItems": 4,
+          "minItems": 4,
+          "prefixItems": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "number"
+            },
+            {
+              "type": "number"
+            },
+            {
+              "type": "number"
+            }
+          ],
+          "title": "Bbox",
+          "type": "array"
+        },
+        "frame_id": {
+          "maxLength": 128,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9_.:-]+$",
+          "title": "Frame Id",
+          "type": "string"
+        },
+        "kind": {
+          "const": "ocr_text",
+          "title": "Kind",
+          "type": "string"
+        },
+        "language": {
+          "minLength": 1,
+          "title": "Language",
+          "type": "string"
+        },
+        "score": {
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "Score",
+          "type": "number"
+        },
+        "text": {
+          "maxLength": 500,
+          "title": "Text",
+          "type": "string"
+        }
+      },
+      "required": [
+        "kind",
+        "frame_id",
+        "text",
+        "bbox",
+        "language",
+        "score"
+      ],
+      "title": "OcrPayload",
+      "type": "object"
+    },
+    "SoundEventPayload": {
+      "additionalProperties": false,
+      "properties": {
+        "chunk_id": {
+          "maxLength": 128,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9_.:-]+$",
+          "title": "Chunk Id",
+          "type": "string"
+        },
+        "events": {
+          "items": {
+            "maxItems": 2,
+            "minItems": 2,
+            "prefixItems": [
+              {
+                "type": "string"
+              },
+              {
+                "maximum": 1.0,
+                "minimum": 0.0,
+                "type": "number"
+              }
+            ],
+            "type": "array"
+          },
+          "title": "Events",
+          "type": "array"
+        },
+        "kind": {
+          "const": "sound_event",
+          "title": "Kind",
+          "type": "string"
+        },
+        "window_end_ns": {
+          "title": "Window End Ns",
+          "type": "integer"
+        },
+        "window_start_ns": {
+          "title": "Window Start Ns",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "kind",
+        "chunk_id",
+        "window_start_ns",
+        "window_end_ns",
+        "events"
+      ],
+      "title": "SoundEventPayload",
+      "type": "object"
+    },
+    "Track": {
+      "additionalProperties": false,
+      "properties": {
+        "age_frames": {
+          "minimum": 1,
+          "title": "Age Frames",
+          "type": "integer"
+        },
+        "bbox": {
+          "maxItems": 4,
+          "minItems": 4,
+          "prefixItems": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "number"
+            },
+            {
+              "type": "number"
+            },
+            {
+              "type": "number"
+            }
+          ],
+          "title": "Bbox",
+          "type": "array"
+        },
+        "label": {
+          "minLength": 1,
+          "title": "Label",
+          "type": "string"
+        },
+        "motion_class": {
+          "enum": [
+            "static",
+            "moving",
+            "unknown"
+          ],
+          "title": "Motion Class",
+          "type": "string"
+        },
+        "quality": {
+          "enum": [
+            "good",
+            "degraded",
+            "lost"
+          ],
+          "title": "Quality",
+          "type": "string"
+        },
+        "score": {
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "Score",
+          "type": "number"
+        },
+        "track_id": {
+          "maxLength": 128,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9_.:-]+$",
+          "title": "Track Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "track_id",
+        "label",
+        "bbox",
+        "score",
+        "quality",
+        "motion_class",
+        "age_frames"
+      ],
+      "title": "Track",
+      "type": "object"
+    },
+    "TrackPayload": {
+      "additionalProperties": false,
+      "properties": {
+        "frame_id": {
+          "maxLength": 128,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9_.:-]+$",
+          "title": "Frame Id",
+          "type": "string"
+        },
+        "kind": {
+          "const": "track_state",
+          "title": "Kind",
+          "type": "string"
+        },
+        "tracks": {
+          "items": {
+            "$ref": "#/$defs/Track"
+          },
+          "title": "Tracks",
+          "type": "array"
+        }
+      },
+      "required": [
+        "kind",
+        "frame_id",
+        "tracks"
+      ],
+      "title": "TrackPayload",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "capture_ts_monotonic_ns": {
+      "title": "Capture Ts Monotonic Ns",
+      "type": "integer"
+    },
+    "clock_quality": {
+      "enum": [
+        "synced",
+        "estimated",
+        "unknown"
+      ],
+      "title": "Clock Quality",
+      "type": "string"
+    },
+    "device_id": {
+      "maxLength": 128,
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9_.:-]+$",
+      "title": "Device Id",
+      "type": "string"
+    },
+    "model": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/ModelRef"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "observation_id": {
+      "maxLength": 128,
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9_.:-]+$",
+      "title": "Observation Id",
+      "type": "string"
+    },
+    "payload": {
+      "discriminator": {
+        "mapping": {
+          "asr_transcript": "#/$defs/AsrPayload",
+          "health": "#/$defs/HealthPayload",
+          "object_detection": "#/$defs/DetectionPayload",
+          "ocr_text": "#/$defs/OcrPayload",
+          "sound_event": "#/$defs/SoundEventPayload",
+          "track_state": "#/$defs/TrackPayload"
+        },
+        "propertyName": "kind"
+      },
+      "oneOf": [
+        {
+          "$ref": "#/$defs/DetectionPayload"
+        },
+        {
+          "$ref": "#/$defs/TrackPayload"
+        },
+        {
+          "$ref": "#/$defs/SoundEventPayload"
+        },
+        {
+          "$ref": "#/$defs/AsrPayload"
+        },
+        {
+          "$ref": "#/$defs/OcrPayload"
+        },
+        {
+          "$ref": "#/$defs/HealthPayload"
+        }
+      ],
+      "title": "Payload"
+    },
+    "quality_flags": {
+      "default": [],
+      "items": {
+        "enum": [
+          "occluded",
+          "camera_motion_uncompensated",
+          "low_light",
+          "frame_dropped",
+          "clock_unreliable"
+        ],
+        "type": "string"
+      },
+      "title": "Quality Flags",
+      "type": "array",
+      "uniqueItems": true
+    },
+    "received_at_utc": {
+      "format": "date-time",
+      "title": "Received At Utc",
+      "type": "string"
+    },
+    "schema_version": {
+      "const": "0.1.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "seq": {
+      "minimum": 0,
+      "title": "Seq",
+      "type": "integer"
+    },
+    "server_received_mono_ns": {
+      "title": "Server Received Mono Ns",
+      "type": "integer"
+    },
+    "session_id": {
+      "maxLength": 128,
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9_.:-]+$",
+      "title": "Session Id",
+      "type": "string"
+    },
+    "stream_id": {
+      "maxLength": 128,
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9_.:-]+$",
+      "title": "Stream Id",
+      "type": "string"
+    }
+  },
+  "required": [
+    "schema_version",
+    "observation_id",
+    "session_id",
+    "device_id",
+    "stream_id",
+    "seq",
+    "capture_ts_monotonic_ns",
+    "received_at_utc",
+    "server_received_mono_ns",
+    "clock_quality",
+    "model",
+    "payload"
+  ],
+  "title": "Observation",
+  "type": "object"
+}

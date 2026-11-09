@@ -1,0 +1,27 @@
+{
+  "schema_version": "0.1.0",
+  "risk_event_id": "risk_sim_0001",
+  "session_id": "sess_sim_001",
+  "device_id": "dev_sim_001",
+  "scenario_id": "visible_obstacle_in_corridor",
+  "policy_version": "indoor_research_v0@1",
+  "state": "warning",
+  "previous_state": "candidate",
+  "severity": "attention",
+  "evidence_ids": [
+    "obs_det_sim_0040",
+    "obs_det_sim_0041",
+    "obs_det_sim_0042"
+  ],
+  "reason_codes": [
+    "temporal_confirmation_passed"
+  ],
+  "decided_at_utc": "2026-11-09T03:15:00Z",
+  "alert": {
+    "alert_id": "alert_sim_0001",
+    "text": "전방 통로에 장애물이 보입니다.",
+    "text_kind": "approved_template",
+    "delivery_state": "queued"
+  },
+  "fixture_note": "합성 입력을 위한 예시. 실제 탐지 성능이나 위험을 증명하지 않음."
+}

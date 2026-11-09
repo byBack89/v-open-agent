@@ -1,0 +1,57 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "alert_id": {
+      "maxLength": 128,
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9_.:-]+$",
+      "title": "Alert Id",
+      "type": "string"
+    },
+    "delivery_state": {
+      "enum": [
+        "queued",
+        "sent",
+        "received",
+        "played",
+        "expired",
+        "unknown_delivery"
+      ],
+      "title": "Delivery State",
+      "type": "string"
+    },
+    "text": {
+      "title": "Text",
+      "type": "string"
+    },
+    "text_kind": {
+      "enum": [
+        "approved_template",
+        "validated_explanation"
+      ],
+      "title": "Text Kind",
+      "type": "string"
+    },
+    "valid_until_utc": {
+      "anyOf": [
+        {
+          "format": "date-time",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Valid Until Utc"
+    }
+  },
+  "required": [
+    "alert_id",
+    "text",
+    "text_kind",
+    "delivery_state"
+  ],
+  "title": "Alert",
+  "type": "object"
+}

@@ -1,0 +1,44 @@
+# 사용법은 README.md "개발 환경 (Docker)" 참고
+name: v-open-agent
+
+x-server-build: &server-build
+  context: .
+  dockerfile: docker/server.Dockerfile
+  args:
+    UID: ${VOA_UID:-1000}
+    GID: ${VOA_GID:-1000}
+
+services:
+  # 빌드/검사/테스트: ruff, mypy, pytest. 네트워크 없음 (DAT-03: 오프라인 통과)
+  dev:
+    image: v-open-agent:server-dev
+    build:
+      <<: *server-build
+      target: dev
+    volumes:
+      - .:/workspace
+    working_dir: /workspace
+    network_mode: none
+    command: ["scripts/check.sh"]
+
+  # 서버 실행 (TASK-16 이후 동작). `docker compose --profile server up server`
+  server:
+    profiles: ["server"]
+    image: v-open-agent:server
+    build:
+      <<: *server-build
+      target: server
+    environment:
+      VOA_PROFILE: dev-mock
+      VOA_BIND: 0.0.0.0           # 컨테이너 내부 bind. 외부 노출 범위는 ports 가 결정
+      VOA_ALLOW_INSECURE_DEV: "false" # 0.0.0.0 bind에서 secret 생략 금지
+      VOA_PORT: "8765"
+      VOA_DB_PATH: /data/voa.sqlite3
+    volumes:
+      - ./apps/server/config:/opt/voa/config:ro
+      - voa-data:/data            # 메타데이터 DB 는 공유 폴더가 아닌 도커 볼륨에 둔다
+    ports:
+      - "127.0.0.1:8765:8765"     # 기본은 호스트 loopback 만. LAN 노출은 pilot 단계에서 결정
+
+volumes:
+  voa-data:

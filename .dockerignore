@@ -1,0 +1,10 @@
+# Docker build context는 서버 의존성, 소스, runtime config로 제한한다.
+*
+!apps/
+!apps/server/
+!apps/server/pyproject.toml
+!apps/server/src/
+!apps/server/src/**
+!apps/server/config/
+!apps/server/config/**
+apps/server/config/devices.yaml
