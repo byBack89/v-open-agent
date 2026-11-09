@@ -722,4 +722,22 @@ VOA_MODEL_AUTO_DOWNLOAD=false
 
 - 기본 설치에서 제외: Ultralytics(AGPL), NC 가중치(예: Depth Anything V2 Base 이상)
 - 모델 manifest: `apps/server/config/models/<id>.yaml` = `{model_id, revision, sha256, license, license_evidence_url, redistribution_allowed, reviewed_at, reviewer}`
-- **현재 런타임 의존성 등록부**: pydantic(MIT), PyYAML(MIT), FastAPI(MIT), uvicorn(BSD-3), httpx(BSD-3, 테스트용), pytest(MIT), ruff(MIT), mypy(MIT), types-PyYAML(Apache-2.0), hatchling(MIT). 의존성을 추가하면 이 줄을 갱신한다.
+
+### 9.1 Python dependency registry
+
+`apps/server/pyproject.toml`의 런타임, 모든 optional-dependencies 그룹, build-system 직접 의존성을 아래 표에 등록한다. 패키지 이름은 대소문자와 `-`, `_`, `.` 차이를 정규화해 비교한다. 의존성을 추가하면 같은 작업에서 이 표도 갱신한다.
+
+`Default install=yes`는 현재 기본 런타임, 개발 또는 빌드 설치에 포함됨을 뜻한다. Stage B 예정 의존성은 아직 `no`다. 모든 직접 의존성과 `yes` 항목은 허용적 SPDX 라이선스(MIT, Apache-2.0, BSD-2-Clause, BSD-3-Clause, ISC, 0BSD)여야 하며 비공개 API 의무가 없어야 한다. AGPL, NC, 미검토 라이선스는 이 검사에 통과하지 못한다. 이 검사는 네트워크나 설치 패키지 메타데이터를 읽지 않고 명시된 등록부를 검증한다.
+
+| Package | License (SPDX) | Default install | Non-public API required |
+|---|---|---|---|
+| pydantic | MIT | yes | no |
+| PyYAML | MIT | yes | no |
+| pytest | MIT | yes | no |
+| ruff | MIT | yes | no |
+| mypy | MIT | yes | no |
+| types-PyYAML | Apache-2.0 | yes | no |
+| hatchling | MIT | yes | no |
+| FastAPI | MIT | no | no |
+| uvicorn | BSD-3-Clause | no | no |
+| httpx | BSD-3-Clause | no | no |

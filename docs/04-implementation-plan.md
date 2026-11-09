@@ -38,7 +38,7 @@
 | TASK-13 | Replay CLI | INP-02, ENG-14, NFR-02 | `apps/server/src/voa/replay/runner.py`, `apps/server/src/voa/replay/__main__.py` (§5) | 2회 실행 출력 바이트 동일(INV-05), 기대 불일치 시 줄/필드 출력 + exit 1, stderr에 p50/p95 | 12 | TODO |
 | TASK-14 | 근거 검증/설명 폴백/행동 제한 | ENG-12, EXP-01, EXP-02 | `apps/server/src/voa/explain/repository.py`, `apps/server/src/voa/explain/validator.py`, `apps/server/src/voa/explain/template.py`, `apps/server/src/voa/explain/actions.py` (§6) | 위반 코드 6종 각각 → 템플릿 폴백 (T-R08), 금지 행동 → `ForbiddenActionError`, idempotency_key 결정론 | 10 | TODO |
 | TASK-15 | SQLite 메타데이터 저장 | DAT-01, DAT-02 | `apps/server/src/voa/storage/sqlite.py` (§8.1), 로그 포매터 (§8.2) | 4개 테이블 CRUD, `PRAGMA table_info`로 BLOB/허용 외 컬럼 없음 검사, 보존 기간 삭제, 로그 허용 키 외 필드 제거 | 03 | TODO |
-| TASK-15A | 의존성 라이선스 등록부 검증 | DAT-05, NFR-04 | `apps/server/tests/test_dependency_registry.py`, `02-technical-specification.md` §9 | `apps/server/pyproject.toml` 직접 의존성이 등록부에 누락되면 실패, AGPL/NC/비공개 API 의무 항목이 기본 설치에 있으면 실패 | 01 | TODO |
+| TASK-15A | 의존성 라이선스 등록부 검증 | DAT-05, NFR-04 | `apps/server/tests/test_dependency_registry.py`, `02-technical-specification.md` §9 | `apps/server/pyproject.toml` 직접 의존성이 등록부에 누락되면 실패, AGPL/NC/비공개 API 의무 항목이 기본 설치에 있으면 실패 | 01 | DONE |
 
 **Stage A 게이트**: TASK-01–15A가 모두 DONE이고, T-R01/02/03/04/08/12/15와 INV-01–10이 통과해야 한다. `python -m voa.replay contracts/fixtures/scenarios/uc01_obstacle.jsonl --expected ...`가 exit 0이어야 한다.
 
