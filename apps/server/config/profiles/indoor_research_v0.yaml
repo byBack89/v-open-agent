@@ -1,0 +1,32 @@
+profile_id: indoor_research_v0
+profile_version: 1
+degraded_notice_text: "카메라 상태를 확인할 수 없어 감지가 제한됩니다."
+params:
+  min_score: 0.5
+  roi_min_overlap: 0.3
+  confirm_frames: 3
+  clear_frames: 3
+  staleness_ms: 1000
+  unknown_after_ms: 1500
+  warning_ttl_ms: 4000
+  window_ms: 5000
+  window_max_items: 256
+scenarios:
+  - id: moving_object_in_attention_zone
+    required_kinds: [object_detection, track_state]
+    required_streams: [camera_0]
+    labels: [person]
+    motion_classes: [moving]
+    roi: [0.25, 0.30, 0.75, 1.00]
+    blocking_flags: [occluded, camera_motion_uncompensated, frame_dropped]
+    warning_text: "전방 이동 물체에 주의하세요."
+    severity: attention
+  - id: visible_obstacle_in_corridor
+    required_kinds: [object_detection]
+    required_streams: [camera_0]
+    labels: [obstacle]
+    motion_classes: []
+    roi: [0.20, 0.40, 0.80, 1.00]
+    blocking_flags: [occluded, frame_dropped]
+    warning_text: "전방 통로에 장애물이 보입니다."
+    severity: attention
